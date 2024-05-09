@@ -26,6 +26,7 @@ import { FormField, useColorScheme } from 'sanity'
 import DeployItem from './deploy-item'
 import { useClient } from './hook/useClient'
 import type { SanityDeploySchema } from './types'
+import CloudflarePagesLogo from './cfp-logo'
 
 const initialDeploy = {
   title: '',
@@ -190,15 +191,7 @@ const VercelDeploy = () => {
               <Flex align="center">
                 <Flex flex={1} align="center">
                   <Card>
-                    <svg
-                      fill="currentColor"
-                      viewBox="0 0 512 512"
-                      height="2rem"
-                      width="2rem"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M256 48l240 416H16z" />
-                    </svg>
+                    <CloudflarePagesLogo width={40} />
                   </Card>
                   <Card marginX={1} style={{ opacity: 0.15 }}>
                     <svg
@@ -217,7 +210,7 @@ const VercelDeploy = () => {
                   </Card>
                   <Card>
                     <Text as="h1" size={2} weight="semibold">
-                      Vercel Deployments
+                      Deployments
                     </Text>
                   </Card>
                 </Flex>
@@ -269,59 +262,7 @@ const VercelDeploy = () => {
                 ) : (
                   <Card as={'li'} padding={5} paddingTop={6}>
                     <Flex direction="column" align="center" justify="center">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        width="150"
-                        viewBox="0 0 260 235"
-                      >
-                        <path
-                          fill={scheme === 'dark' ? 'transparent' : 'white'}
-                          fillRule="evenodd"
-                          stroke={scheme === 'dark' ? 'white' : 'black'}
-                          strokeDasharray="4 4"
-                          strokeWidth="2"
-                          d="M107.36 2.48l105.7 185.47H2.66L108.35 2.48z"
-                          clipRule="evenodd"
-                        />
-                        <ellipse
-                          cx="182.68"
-                          cy="156.48"
-                          fill="transparent"
-                          rx="74.32"
-                          ry="74.52"
-                        />
-                        <path
-                          stroke={scheme === 'dark' ? 'white' : 'black'}
-                          strokeWidth="2"
-                          d="M256.5 156.48c0 40.88-33.05 74.02-73.82 74.02-40.77 0-73.83-33.14-73.83-74.02 0-40.87 33.06-74.01 73.83-74.01 40.77 0 73.82 33.14 73.82 74.01z"
-                        />
-
-                        <mask
-                          id="a"
-                          width="149"
-                          height="150"
-                          x="108"
-                          y="81"
-                          maskUnits="userSpaceOnUse"
-                        >
-                          <ellipse
-                            cx="182.68"
-                            cy="156.48"
-                            fill="white"
-                            rx="74.32"
-                            ry="74.52"
-                          />
-                        </mask>
-                        <g mask="url(#a)">
-                          <path
-                            fill={scheme === 'dark' ? 'white' : 'black'}
-                            fillRule="evenodd"
-                            d="M108.36 2.48l105.7 185.47H2.66L108.35 2.48z"
-                            clipRule="evenodd"
-                          />
-                        </g>
-                      </svg>
+                      <CloudflarePagesLogo width={350} displayText />
 
                       <Flex direction="column" align="center" padding={4}>
                         <Text size={3}>No deployments created yet.</Text>
