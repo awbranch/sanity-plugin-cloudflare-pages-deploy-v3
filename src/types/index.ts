@@ -2,6 +2,7 @@ import React from 'react'
 
 export type StatusType =
   | 'LOADING'
+  
   | 'ERROR'
   | 'INITIATED'
   | 'CANCELED'
@@ -9,7 +10,7 @@ export type StatusType =
   | 'BUILDING'
   | 'QUEUED'
 
-export interface VercelTeam {
+export interface PagesTeam {
   [key: string]: unknown
   slug: string
   name: string
@@ -20,9 +21,9 @@ export interface SanityDeploySchema {
   _id: string
   name: string
   url: string
-  vercelProject: string
-  vercelTeam: VercelTeam
-  vercelToken: string
+  pagesProject: string
+  pagesTeam: PagesTeam
+  pagesToken: string
   disableDeleteAction: boolean
 }
 
@@ -43,7 +44,7 @@ export interface Deployments {
   }
 }
 
-export interface VercelDeployConfig {
+export interface PagesDeployConfig {
   name?: string
   icon?: React.ReactNode
   title?: string

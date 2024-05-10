@@ -20,12 +20,12 @@ import DeployStatus from './deploy-status'
 import type { Deployments, SanityDeploySchema } from './types'
 
 interface DeployHistoryProps
-  extends Omit<SanityDeploySchema, '_id' | 'name' | 'disableDeleteAction'> {}
+  extends Omit<SanityDeploySchema, '_id' | 'name' | 'disableDeleteAction'> { }
 const DeployHistory: React.FC<DeployHistoryProps> = ({
   url,
-  vercelProject,
-  vercelToken,
-  vercelTeam,
+  pagesProject,
+  pagesToken,
+  pagesTeam,
 }) => {
   const [deployments, setDeployments] = useState<Deployments[]>([])
   const [loading, setLoading] = useState(false)
@@ -34,20 +34,19 @@ const DeployHistory: React.FC<DeployHistoryProps> = ({
   const deployHookId = url?.split('/').pop()?.split('?').shift()
 
   useEffect(() => {
-    if (!vercelProject) {
+    if (!pagesProject) {
       return
     }
     setLoading(true)
 
     axios
       .get(
-        `https://api.vercel.com/v5/now/deployments?projectId=${vercelProject}&meta-deployHookId=${deployHookId}&limit=6${
-          vercelTeam?.id ? `&teamId=${vercelTeam?.id}` : ''
+        `https://api.vercel.com/v5/now/deployments?projectId=${pagesProject}&meta-deployHookId=${deployHookId}&limit=6${pagesTeam?.id ? `&teamId=${pagesTeam?.id}` : ''
         }`,
         {
           headers: {
             'content-type': 'application/json',
-            Authorization: `Bearer ${vercelToken}`,
+            Authorization: `Bearer ${pagesToken}`,
           },
         }
       )
@@ -61,7 +60,7 @@ const DeployHistory: React.FC<DeployHistoryProps> = ({
         setError(true)
         console.warn(e)
       })
-  }, [url, vercelProject, vercelTeam?.id, vercelToken])
+  }, [url, pagesProject, pagesTeam?.id, pagesToken])
 
   if (loading) {
     return (
@@ -78,7 +77,7 @@ const DeployHistory: React.FC<DeployHistoryProps> = ({
     return (
       <Card padding={4} radius={2} shadow={1} tone="critical">
         <Text size={2} align="center">
-          Could not load deployments for {vercelProject}
+          Could not load deployments for {pagesProject}
         </Text>
       </Card>
     )

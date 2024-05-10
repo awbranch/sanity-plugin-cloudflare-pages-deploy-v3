@@ -2,21 +2,21 @@ import { definePlugin } from 'sanity'
 import { route } from 'sanity/router'
 
 import { default as deployIcon } from './deploy-icon'
-import type { VercelDeployConfig } from './types'
-import VercelDeploy from './vercel-deploy'
+import type { PagesDeployConfig } from './types'
+import PagesDeploy from './vercel-deploy'
 
-export const vercelDeployTool = definePlugin<VercelDeployConfig | void>(
+export const pagesDeployTool = definePlugin<PagesDeployConfig | void>(
   (options) => {
     const { name, title, icon, ...config } = options || {}
 
     return {
-      name: 'sanity-plugin-vercel-deploy',
+      name: 'sanity-plugin-cloudflare-pages-deploy',
       tools: [
         {
-          name: name || 'vercel-deploy',
+          name: name || 'cloudflare-pages-deploy',
           title: title || 'Deploy',
           icon: icon || deployIcon,
-          component: VercelDeploy,
+          component: PagesDeploy,
           options: config,
           router: route.create('/*'),
         },

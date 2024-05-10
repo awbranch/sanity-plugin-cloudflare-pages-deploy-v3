@@ -1,24 +1,25 @@
 {
-  "name": "sanity-plugin-vercel-deploy",
+  "name": "sanity-plugin-cloudflare-pages-deploy-v3",
   "version": "3.3.4",
-  "description": "Trigger Vercel Deploy Hooks from your Sanity Studio",
+  "description": "Trigger Cloudflare Pages Deploy Hooks from your Sanity Studio",
   "keywords": [
     "sanity",
     "sanity-plugin",
-    "vercel",
+    "cloudflare",
+    "cloudflare pages",
     "deploy",
     "webhook"
   ],
-  "homepage": "https://github.com/ndimatteo/sanity-plugin-vercel-deploy#readme",
+  "homepage": "https://github.com/awbranch/sanity-plugin-cloudflare-pages-deploy-v3#readme",
   "bugs": {
-    "url": "https://github.com/ndimatteo/sanity-plugin-vercel-deploy/issues"
+    "url": "https://github.com/awbranch/sanity-plugin-cloudflare-pages-deploy-v3/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/ndimatteo/sanity-plugin-vercel-deploy.git"
+    "url": "https://github.com/awbranch/sanity-plugin-cloudflare-pages-deploy-v3.git"
   },
   "license": "MIT",
-  "author": "Nick DiMatteo <hello@nickdimatteo.com>",
+  "author": "Andrew Branch",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

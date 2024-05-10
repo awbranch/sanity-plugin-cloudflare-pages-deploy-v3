@@ -26,7 +26,7 @@ import { FormField, useColorScheme } from 'sanity'
 import DeployItem from './deploy-item'
 import { useClient } from './hook/useClient'
 import type { SanityDeploySchema } from './types'
-import CloudflarePagesLogo from './cfp-logo'
+import PagesLogo from './cfp-logo'
 
 const initialDeploy = {
   title: '',
@@ -37,7 +37,7 @@ const initialDeploy = {
   disableDeleteAction: false,
 }
 
-const VercelDeploy = () => {
+const PagesDeploy = () => {
   const WEBHOOK_TYPE = 'webhook_deploy'
   const WEBHOOK_QUERY = `*[_type == "${WEBHOOK_TYPE}"] | order(_createdAt)`
   const client = useClient()
@@ -53,8 +53,8 @@ const VercelDeploy = () => {
   const onSubmit = async () => {
     // If we have a team slug, we'll have to get the associated teamId to include in every new request
     // Docs: https://vercel.com/docs/api#api-basics/authentication/accessing-resources-owned-by-a-team
-    let vercelTeamID
-    let vercelTeamName
+    let pagesTeamID
+    let pagesTeamName
     setIsSubmitting(true)
 
     if (pendingDeploy.team) {
@@ -72,8 +72,8 @@ const VercelDeploy = () => {
           throw new Error('No team id found')
         }
 
-        vercelTeamID = fetchTeam.data.id
-        vercelTeamName = fetchTeam.data.name
+        pagesTeamID = fetchTeam.data.id
+        pagesTeamName = fetchTeam.data.name
       } catch (error) {
         console.error(error)
         setIsSubmitting(false)
@@ -83,7 +83,7 @@ const VercelDeploy = () => {
           title: 'No Team found!',
           closable: true,
           description:
-            'Make sure the token you provided is valid and that the team’s slug correspond to the one you see in Vercel',
+            'Make sure the token you provided is valid and that the team’s slug correspond to the one you see in Pages',
         })
 
         return
@@ -92,19 +92,19 @@ const VercelDeploy = () => {
 
     client
       .create({
-        // Explicitly define an _id inside the vercel-deploy path to make sure it's not publicly accessible
+        // Explicitly define an _id inside the pages-deploy path to make sure it's not publicly accessible
         // This will protect users' tokens & project info. Read more: https://www.sanity.io/docs/ids
-        _id: `vercel-deploy.${nanoid()}`,
+        _id: `pages-deploy.${nanoid()}`,
         _type: WEBHOOK_TYPE,
         name: pendingDeploy.title,
         url: pendingDeploy.url,
-        vercelProject: pendingDeploy.project,
-        vercelTeam: {
+        pagesProject: pendingDeploy.project,
+        pagesTeam: {
           slug: pendingDeploy.team || undefined,
-          name: vercelTeamName || undefined,
-          id: vercelTeamID || undefined,
+          name: pagesTeamName || undefined,
+          id: pagesTeamID || undefined,
         },
-        vercelToken: pendingDeploy.token,
+        pagesToken: pendingDeploy.token,
         disableDeleteAction: pendingDeploy.disableDeleteAction,
       })
       .then(() => {
@@ -191,7 +191,7 @@ const VercelDeploy = () => {
               <Flex align="center">
                 <Flex flex={1} align="center">
                   <Card>
-                    <CloudflarePagesLogo width={40} />
+                    <PagesLogo variant="SIMPLE" width={40} />
                   </Card>
                   <Card marginX={1} style={{ opacity: 0.15 }}>
                     <svg
@@ -252,9 +252,9 @@ const VercelDeploy = () => {
                         name={deploy.name}
                         url={deploy.url}
                         _id={deploy._id}
-                        vercelProject={deploy.vercelProject}
-                        vercelTeam={deploy.vercelTeam}
-                        vercelToken={deploy.vercelToken}
+                        pagesProject={deploy.pagesProject}
+                        pagesTeam={deploy.pagesTeam}
+                        pagesToken={deploy.pagesToken}
                         disableDeleteAction={deploy.disableDeleteAction}
                       />
                     </Card>
@@ -262,7 +262,7 @@ const VercelDeploy = () => {
                 ) : (
                   <Card as={'li'} padding={5} paddingTop={6}>
                     <Flex direction="column" align="center" justify="center">
-                      <CloudflarePagesLogo width={350} displayText />
+                      <PagesLogo width={350} variant="FULL" />
 
                       <Flex direction="column" align="center" padding={4}>
                         <Text size={3}>No deployments created yet.</Text>
@@ -356,8 +356,8 @@ const VercelDeploy = () => {
                 </FormField>
 
                 <FormField
-                  title="Vercel Project Name"
-                  description={`Vercel Project: Settings → General → "Project Name"`}
+                  title="Pages Project Name"
+                  description={`Pages Project: Settings → General → "Project Name"`}
                 >
                   <TextInput
                     type="text"
@@ -374,8 +374,8 @@ const VercelDeploy = () => {
                 </FormField>
 
                 <FormField
-                  title="Vercel Team Name"
-                  description={`Required for projects under a Vercel Team: Settings → General → "Team Name"`}
+                  title="Pages Team Name"
+                  description={`Required for projects under a Pages Team: Settings → General → "Team Name"`}
                 >
                   <TextInput
                     type="text"
@@ -393,7 +393,7 @@ const VercelDeploy = () => {
 
                 <FormField
                   title="Deploy Hook URL"
-                  description={`Vercel Project: Settings → Git → "Deploy Hooks"`}
+                  description={`Pages Project: Settings → Git → "Deploy Hooks"`}
                 >
                   <TextInput
                     type="text"
@@ -411,8 +411,8 @@ const VercelDeploy = () => {
                 </FormField>
 
                 <FormField
-                  title="Vercel Token"
-                  description={`Vercel Account dropdown: Settings → "Tokens"`}
+                  title="Pages Token"
+                  description={`Pages Account dropdown: Settings → "Tokens"`}
                 >
                   <TextInput
                     type="text"
@@ -466,4 +466,4 @@ const VercelDeploy = () => {
   )
 }
 
-export default VercelDeploy
+export default PagesDeploy

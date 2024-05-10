@@ -56,14 +56,14 @@ const initialDeploy = {
   disableDeleteAction: false,
 }
 
-interface DeployItemProps extends SanityDeploySchema {}
+interface DeployItemProps extends SanityDeploySchema { }
 const DeployItem: React.FC<DeployItemProps> = ({
   name,
   url,
   _id,
-  vercelProject,
-  vercelToken,
-  vercelTeam,
+  pagesProject,
+  pagesToken,
+  pagesTeam,
   disableDeleteAction,
 }) => {
   const client = useClient()
@@ -87,10 +87,9 @@ const DeployItem: React.FC<DeployItemProps> = ({
 
   const { data: projectData } = useSWR(
     [
-      `https://api.vercel.com/v8/projects/${vercelProject}${
-        vercelTeam?.id ? `?teamId=${vercelTeam?.id}` : ''
+      `https://api.vercel.com/v8/projects/${pagesProject}${pagesTeam?.id ? `?teamId=${pagesTeam?.id}` : ''
       }`,
-      vercelToken,
+      pagesToken,
     ],
     (path, token) => fetcher(path, token),
     {
@@ -105,12 +104,10 @@ const DeployItem: React.FC<DeployItemProps> = ({
 
   const { data: deploymentData } = useSWR(
     () => [
-      `https://api.vercel.com/v5/now/deployments?projectId=${
-        projectData.id
-      }&meta-deployHookId=${deployHookId}&limit=1${
-        vercelTeam?.id ? `&teamId=${vercelTeam?.id}` : ''
+      `https://api.vercel.com/v5/now/deployments?projectId=${projectData.id
+      }&meta-deployHookId=${deployHookId}&limit=1${pagesTeam?.id ? `&teamId=${pagesTeam?.id}` : ''
       }`,
-      vercelToken,
+      pagesToken,
     ],
     (path, token) => fetcher(path, token),
     {
@@ -158,7 +155,7 @@ const DeployItem: React.FC<DeployItemProps> = ({
           Authorization: `Bearer ${token}`,
         },
         params: {
-          ...(vercelTeam ? { teamId: vercelTeam?.id } : {}),
+          ...(pagesTeam ? { teamId: pagesTeam?.id } : {}),
         },
       })
       .then((res) => res.data)
@@ -184,10 +181,10 @@ const DeployItem: React.FC<DeployItemProps> = ({
   const onEdit = () => {
     setpendingDeploy({
       title: name,
-      project: vercelProject,
-      team: vercelTeam?.slug,
+      project: pagesProject,
+      team: pagesTeam?.slug,
       url,
-      token: vercelToken,
+      token: pagesToken,
       disableDeleteAction,
     })
     setIsFormOpen(true)
@@ -196,8 +193,8 @@ const DeployItem: React.FC<DeployItemProps> = ({
   const onSubmitEdit = async () => {
     // If we have a team slug, we'll have to get the associated teamId to include in every new request
     // Docs: https://vercel.com/docs/api#api-basics/authentication/accessing-resources-owned-by-a-team
-    let vercelTeamID
-    let vercelTeamName
+    let pagesTeamID
+    let pagesTeamName
     setIsSubmitting(true)
 
     if (pendingDeploy.team) {
@@ -215,8 +212,8 @@ const DeployItem: React.FC<DeployItemProps> = ({
           throw new Error('No team id found')
         }
 
-        vercelTeamID = fetchTeam.data.id
-        vercelTeamName = fetchTeam.data.name
+        pagesTeamID = fetchTeam.data.id
+        pagesTeamName = fetchTeam.data.name
       } catch (error) {
         console.error(error)
         setIsSubmitting(false)
@@ -226,7 +223,7 @@ const DeployItem: React.FC<DeployItemProps> = ({
           title: 'No Team found!',
           closable: true,
           description:
-            'Make sure the token you provided is valid and that the team’s slug correspond to the one you see in Vercel',
+            'Make sure the token you provided is valid and that the team’s slug correspond to the one you see in Pages',
         })
 
         return
@@ -238,13 +235,13 @@ const DeployItem: React.FC<DeployItemProps> = ({
       .set({
         name: pendingDeploy.title,
         url: pendingDeploy.url,
-        vercelProject: pendingDeploy.project,
-        vercelTeam: {
+        pagesProject: pendingDeploy.project,
+        pagesTeam: {
           slug: pendingDeploy.team || undefined,
-          name: vercelTeamName || undefined,
-          id: vercelTeamID || undefined,
+          name: pagesTeamName || undefined,
+          id: pagesTeamID || undefined,
         },
-        vercelToken: pendingDeploy.token,
+        pagesToken: pendingDeploy.token,
         disableDeleteAction: pendingDeploy.disableDeleteAction,
       })
       .commit()
@@ -343,9 +340,9 @@ const DeployItem: React.FC<DeployItemProps> = ({
                 radius={6}
                 fontSize={0}
               >
-                {vercelProject}
+                {pagesProject}
               </Badge>
-              {vercelTeam?.id && (
+              {pagesTeam?.id && (
                 <Badge
                   mode="outline"
                   paddingX={3}
@@ -353,7 +350,7 @@ const DeployItem: React.FC<DeployItemProps> = ({
                   radius={6}
                   fontSize={0}
                 >
-                  {vercelTeam?.name}
+                  {pagesTeam?.name}
                 </Badge>
               )}
             </Inline>
@@ -377,7 +374,7 @@ const DeployItem: React.FC<DeployItemProps> = ({
           flex={[1, 'none']}
         >
           <Inline space={2}>
-            {vercelToken && vercelProject && (
+            {pagesToken && pagesProject && (
               <Box marginRight={2}>
                 <Stack space={2}>
                   <DeployStatus status={status} justify="flex-end">
@@ -406,8 +403,8 @@ const DeployItem: React.FC<DeployItemProps> = ({
                     {isDeploying
                       ? buildTime || '--'
                       : timestamp
-                      ? spacetime.now().since(spacetime(timestamp)).rounded
-                      : '--'}
+                        ? spacetime.now().since(spacetime(timestamp)).rounded
+                        : '--'}
                   </Text>
                 </Stack>
               </Box>
@@ -430,7 +427,7 @@ const DeployItem: React.FC<DeployItemProps> = ({
                 type="button"
                 tone="critical"
                 onClick={() => {
-                  onCancel(deploymentData.deployments[0].uid, vercelToken)
+                  onCancel(deploymentData.deployments[0].uid, pagesToken)
                 }}
                 radius={3}
                 text="Cancel"
@@ -536,8 +533,8 @@ const DeployItem: React.FC<DeployItemProps> = ({
               </FormField>
 
               <FormField
-                title="Vercel Project Name"
-                description={`Vercel Project: Settings → General → "Project Name"`}
+                title="Pages Project Name"
+                description={`Pages Project: Settings → General → "Project Name"`}
               >
                 <TextInput
                   type="text"
@@ -554,8 +551,8 @@ const DeployItem: React.FC<DeployItemProps> = ({
               </FormField>
 
               <FormField
-                title="Vercel Team Name"
-                description={`Required for projects under a Vercel Team: Settings → General → "Team Name"`}
+                title="Pages Team Name"
+                description={`Required for projects under a Pages Team: Settings → General → "Team Name"`}
               >
                 <TextInput
                   type="text"
@@ -573,7 +570,7 @@ const DeployItem: React.FC<DeployItemProps> = ({
 
               <FormField
                 title="Deploy Hook URL"
-                description={`Vercel Project: Settings → Git → "Deploy Hooks"`}
+                description={`Pages Project: Settings → Git → "Deploy Hooks"`}
               >
                 <TextInput
                   type="text"
@@ -634,9 +631,9 @@ const DeployItem: React.FC<DeployItemProps> = ({
         >
           <DeployHistory
             url={url}
-            vercelProject={projectData.id}
-            vercelToken={vercelToken}
-            vercelTeam={vercelTeam}
+            pagesProject={projectData.id}
+            pagesToken={pagesToken}
+            pagesTeam={pagesTeam}
           />
         </Dialog>
       )}

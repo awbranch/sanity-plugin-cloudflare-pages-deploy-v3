@@ -2,8 +2,8 @@
   Vercel Deployment for Sanity
 </h3>
 <p align="center">
-  <strong>Trigger Vercel Deploy Hooks from your Sanity V3 Studio.</strong><br />
-✨ LIVE status updates ✨ multiple deployments ✨ active polling ✨ Vercel Teams support ✨
+  <strong>Trigger Cloudflare Pages Deploy Hooks from your Sanity V3 Studio.</strong><br />
+✨ LIVE status updates ✨ multiple deployments ✨ active polling ✨
 </p>
 
 ![vercel-deploy-v3](https://user-images.githubusercontent.com/737188/214927717-ba84450f-8359-401c-acf0-08eeafc22881.png)
