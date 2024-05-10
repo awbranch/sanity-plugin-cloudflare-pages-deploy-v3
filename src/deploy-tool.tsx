@@ -3,7 +3,7 @@ import { route } from 'sanity/router'
 
 import { default as deployIcon } from './deploy-icon'
 import type { PagesDeployConfig } from './types'
-import PagesDeploy from './vercel-deploy'
+import PagesDeploy from './pages-deploy'
 
 export const pagesDeployTool = definePlugin<PagesDeployConfig | void>(
   (options) => {

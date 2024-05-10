@@ -26,7 +26,7 @@ import { FormField, useColorScheme } from 'sanity'
 import DeployItem from './deploy-item'
 import { useClient } from './hook/useClient'
 import type { SanityDeploySchema } from './types'
-import PagesLogo from './cfp-logo'
+import PagesLogo from './pages-logo'
 
 const initialDeploy = {
   title: '',
